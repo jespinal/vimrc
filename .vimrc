@@ -42,10 +42,14 @@ Plug 'osfameron/perl-tags'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'majutsushi/tagbar'
 "Plug 'tpope/vim-fugitive'
 "Plug 'tobyS/pdv'
 call plug#end()
 
+" ============================================
+" Syntastic configuration
+" ============================================
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -56,12 +60,20 @@ let g:syntastic_php_checkers = ['php','phpcs']
 let g:syntastic_sh_checkers = ['bashate']
 let g:ycm_collect_identifiers_from_tags_files = 1 
 
+" ============================================
+" Airline
+" ============================================
+let g:airline#extensions#tagbar#flags = 'f'  " show function name in status bar
+
+" ============================================
+" NERDTree
+" ============================================
 " In order to have NERDTree automatically start when vim starts up
 " autocmd vimenter * NERDTree
 
 nnoremap <F9> :!%:p<Enter>
 
-" In many terminal emulators the mouse works just fine, thus enable it.
+" In many terminal emulators the mouse works just fine, use this to enable it 
 if has('mouse')
     "set mouse=a
 endif
