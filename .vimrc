@@ -30,7 +30,7 @@ set shiftwidth=4
 set shortmess=filnxtToOc
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=4
-set tags=./tags,./TAGS,tags,TAGS,/home/jespinal/hostpapa/hpcms-tags,/home/jespinal/hostpapa/perltags
+set tags=./tags,./TAGS,tags,TAGS,/home/jespinal/hostpapa/hpcms-tags
 " vim: set ft=vim :
 
 call plug#begin('~/.vim/plugged')
@@ -39,6 +39,11 @@ Plug 'leafgarland/typescript-vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
 Plug 'osfameron/perl-tags'
+Plug 'airblade/vim-gitgutter'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'tpope/vim-fugitive'
+"Plug 'tobyS/pdv'
 call plug#end()
 
 let g:syntastic_always_populate_loc_list = 1
@@ -49,6 +54,10 @@ let g:syntastic_check_on_wq = 0
 "let g:syntastic_php_checkers = ['php']
 let g:syntastic_php_checkers = ['php','phpcs']
 let g:syntastic_sh_checkers = ['bashate']
+let g:ycm_collect_identifiers_from_tags_files = 1 
+
+" In order to have NERDTree automatically start when vim starts up
+" autocmd vimenter * NERDTree
 
 nnoremap <F9> :!%:p<Enter>
 
