@@ -43,8 +43,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
-"Plug 'tpope/vim-fugitive'
-"Plug 'tobyS/pdv'
+Plug 'vim-vdebug/vdebug'
 call plug#end()
 
 " ============================================
@@ -55,9 +54,8 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
-"let g:syntastic_php_checkers = ['php']
 let g:syntastic_php_checkers = ['php','phpcs']
-let g:syntastic_sh_checkers = ['bashate']
+"let g:syntastic_sh_checkers = ['bashate']
 let g:ycm_collect_identifiers_from_tags_files = 1 
 
 " ============================================
@@ -71,7 +69,15 @@ let g:airline#extensions#tagbar#flags = 'f'  " show function name in status bar
 " In order to have NERDTree automatically start when vim starts up
 " autocmd vimenter * NERDTree
 
-nnoremap <F9> :!%:p<Enter>
+" ============================================
+" Vdebug
+" ============================================
+if !exists('g:vdebug_options')
+	let g:vdebug_options = {}
+endif
+let g:vdebug_options.port = 9500
+let g:vdebug_options.path_maps = { "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hpcms" }
+
 
 " In many terminal emulators the mouse works just fine, use this to enable it 
 if has('mouse')
