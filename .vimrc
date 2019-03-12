@@ -25,7 +25,7 @@ set helplang=en
 set nomodeline
 set printoptions=paper:a4
 set ruler
-set runtimepath=~/.vim,~/.vim/plugged/typescript-vim/,~/.vim/plugged/YouCompleteMe/,~/.vim/plugged/phpcomplete.vim/,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim74,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after
+"set runtimepath=~/.vim,~/.config/nvim,~/.vim/plugged/typescript-vim/,~/.vim/plugged/YouCompleteMe/,~/.vim/plugged/phpcomplete.vim/,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim74,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after
 set shiftwidth=4
 set shortmess=filnxtToOc
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
@@ -35,6 +35,7 @@ set tags=./tags,./TAGS,tags,TAGS,/home/jespinal/hostpapa/hpcms-tags
 
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'leafgarland/typescript-vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
@@ -49,19 +50,28 @@ call plug#end()
 " ============================================
 " Syntastic configuration
 " ============================================
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 "let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
-let g:syntastic_php_checkers = ['php','phpcs']
-"let g:syntastic_sh_checkers = ['bashate']
+let g:syntastic_php_checkers = ['php']
+let g:syntastic_enable_perl_checker = 1
 let g:ycm_collect_identifiers_from_tags_files = 1 
 
 " ============================================
 " Airline
 " ============================================
 let g:airline#extensions#tagbar#flags = 'f'  " show function name in status bar
+
+" ============================================
+" Airline Theme
+" ============================================
+let g:airline_theme='angr'
 
 " ============================================
 " NERDTree
@@ -75,7 +85,7 @@ let g:airline#extensions#tagbar#flags = 'f'  " show function name in status bar
 if !exists('g:vdebug_options')
 	let g:vdebug_options = {}
 endif
-let g:vdebug_options.port = 9500
+let g:vdebug_options.port = 9000
 let g:vdebug_options.path_maps = { "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hpcms" }
 
 
@@ -98,7 +108,7 @@ if has("autocmd")
   au!
 
   " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+  " autocmd FileType text setlocal textwidth=78
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
