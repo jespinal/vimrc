@@ -25,35 +25,36 @@ set helplang=en
 set nomodeline
 set printoptions=paper:a4
 set ruler
-"set runtimepath=~/.vim,~/.config/nvim,~/.vim/plugged/typescript-vim/,~/.vim/plugged/YouCompleteMe/,~/.vim/plugged/phpcomplete.vim/,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim74,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after
 set shiftwidth=4
 set shortmess=filnxtToOc
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=4
-set tags=./tags,./TAGS,tags,TAGS,/home/jespinal/hostpapa/hpcms-tags
+set tags=./tags,./TAGS,tags,TAGS,/home/jespinal/hostpapa/hpcms-tags,/home/jespinal/hostpapa/hpangularform-tags
 " vim: set ft=vim :
 
 call plug#begin('~/.vim/plugged')
+Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'leafgarland/typescript-vim'
+" Plug 'leafgarland/typescript-vim'
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
+Plug 'shawncplus/phpcomplete.vim' " YouCompleteMe uses 'omnifunc' for PHP, trying this as replacement 
 Plug 'vim-syntastic/syntastic'
 Plug 'osfameron/perl-tags'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'majutsushi/tagbar'
 Plug 'vim-vdebug/vdebug'
 call plug#end()
 
 " ============================================
 " Syntastic configuration
 " ============================================
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
+" When using 'airline' you should NOT follow the recommendation outlined in
+" the |syntastic-statusline-flag| section above to modify your |'statusline'|.
+" airline" shall make all necessary changes automatically.
+"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -63,15 +64,57 @@ let g:syntastic_php_checkers = ['php']
 let g:syntastic_enable_perl_checker = 1
 let g:ycm_collect_identifiers_from_tags_files = 1 
 
+" https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support#vim
+if !exists("g:ycm_semantic_triggers")
+     let g:ycm_semantic_triggers = {}
+ endif
+" let g:ycm_semantic_triggers['typescript'] = ['.']
+let g:ycm_semantic_triggers =  {
+  \   'typescript': ['.'],
+  \   'c': ['->', '.'],
+  \   'objc': ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \            're!\[.*\]\s'],
+  \   'ocaml': ['.', '#'],
+  \   'cpp,cuda,objcpp': ['->', '.', '::'],
+  \   'perl': ['->'],
+  \   'php': ['->', '::'],
+  \   'cs,d,elixir,go,groovy,java,javascript,julia,perl6,python,scala,typescript,vb': ['.'],
+  \   'ruby,rust': ['.', '::'],
+  \   'lua': ['.', ':'],
+  \   'erlang': [':'],
+  \ }
+
+
 " ============================================
 " Airline
 " ============================================
-let g:airline#extensions#tagbar#flags = 'f'  " show function name in status bar
+let g:airline#extensions#tagbar#enabled=1 
+let g:airline#extensions#tagbar#flags='f'  " show function name in status bar
 
 " ============================================
 " Airline Theme
 " ============================================
 let g:airline_theme='angr'
+
+" ============================================
+" Tagbar
+" ============================================
+let g:tagbar_ctags_bin='~/bin/ctags'
+
+" Typescript ctags support 
+let g:tagbar_type_typescript = {
+  \ 'ctagstype': 'typescript',
+  \ 'kinds': [
+    \ 'c:classes',
+    \ 'n:modules',
+    \ 'f:functions',
+    \ 'v:variables',
+    \ 'v:varlambdas',
+    \ 'm:members',
+    \ 'i:interfaces',
+    \ 'e:enums',
+  \ ]
+\ }
 
 " ============================================
 " NERDTree
@@ -88,6 +131,19 @@ endif
 let g:vdebug_options.port = 9000
 let g:vdebug_options.path_maps = { "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hpcms" }
 
+" ============================================
+" phpcomplete.vim (replacement for 'omnifunc', for YouCompleteMe
+" ============================================
+" autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+"
+if has("autocmd") && exists("+omnifunc")
+autocmd FileType "php"
+        \   setlocal omnifunc=phpcomplete#CompletePHP |
+autocmd Filetype *
+        \	if &omnifunc == "" |
+        \		setlocal omnifunc=syntaxcomplete#Complete |
+        \	endif
+endif
 
 " In many terminal emulators the mouse works just fine, use this to enable it 
 if has('mouse')
