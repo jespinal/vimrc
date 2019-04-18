@@ -39,13 +39,13 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'leafgarland/typescript-vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
-Plug 'shawncplus/phpcomplete.vim' " YouCompleteMe uses 'omnifunc' for PHP, trying this as replacement 
 Plug 'vim-syntastic/syntastic'
 Plug 'osfameron/perl-tags'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-vdebug/vdebug'
+Plug 'mileszs/ack.vim'
 call plug#end()
 
 " ============================================
@@ -134,16 +134,29 @@ let g:vdebug_options.path_maps = { "/var/www/local.srv.hostpapa/cms/current" : "
 " ============================================
 " phpcomplete.vim (replacement for 'omnifunc', for YouCompleteMe
 " ============================================
-" autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 "
 if has("autocmd") && exists("+omnifunc")
-autocmd FileType "php"
-        \   setlocal omnifunc=phpcomplete#CompletePHP |
-autocmd Filetype *
+autocmd FileType *
         \	if &omnifunc == "" |
         \		setlocal omnifunc=syntaxcomplete#Complete |
         \	endif
 endif
+
+" ============================================
+" Ack.vim (configuration needed for _ag_)
+" Note: there's a slight modification in ack.vim where I duplicated the
+" `command` lines at the end, and changed the handler from Ack to Ag
+" (s/Ack/Ag/)
+" ============================================
+if executable("ag")
+    let g:ackprg = "ag --nogroup --nocolor --column"
+endif
+
+" ============================================
+" Highlight variable under the cursor
+" ============================================
+" :autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+
 
 " In many terminal emulators the mouse works just fine, use this to enable it 
 if has('mouse')
