@@ -29,7 +29,7 @@ set shiftwidth=4
 set shortmess=filnxtToOc
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=4
-set tags=./tags,./TAGS,tags,TAGS,/home/jespinal/hostpapa/hpcms-tags,/home/jespinal/hostpapa/hpangularform-tags
+set tags=./tags,./TAGS,tags,TAGS,~/hostpapa/hpcms-tags
 " vim: set ft=vim :
 
 call plug#begin('~/.vim/plugged')
@@ -46,6 +46,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-vdebug/vdebug'
 Plug 'mileszs/ack.vim'
+Plug 'shawncplus/phpcomplete.vim'
 call plug#end()
 
 " ============================================
@@ -130,6 +131,7 @@ if !exists('g:vdebug_options')
 endif
 let g:vdebug_options.port = 9000
 let g:vdebug_options.path_maps = { "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hpcms" }
+let g:vdebug_options.break_on_open = 0
 
 " ============================================
 " phpcomplete.vim (replacement for 'omnifunc', for YouCompleteMe
@@ -138,7 +140,8 @@ let g:vdebug_options.path_maps = { "/var/www/local.srv.hostpapa/cms/current" : "
 if has("autocmd") && exists("+omnifunc")
 autocmd FileType *
         \	if &omnifunc == "" |
-        \		setlocal omnifunc=syntaxcomplete#Complete |
+        "\		setlocal omnifunc=syntaxcomplete#Complete |
+        \		setlocal omnifunc=phpcomplete#Complete |
         \	endif
 endif
 
@@ -206,6 +209,8 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 " Highlight variable under the cursor
 " ============================================
 " :autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+
+set incsearch
 
 " In many terminal emulators the mouse works just fine, use this to enable it 
 if has('mouse')
