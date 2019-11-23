@@ -29,6 +29,7 @@ set shiftwidth=4
 set shortmess=filnxtToOc
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=4
+"set tags=./tags,./TAGS,tags,TAGS,~/hostpapa/hpcms-tags,~/hostpapa/hpangularform-tags,~/hostpapa/hplegacy-tags,~/hostpapa/kbwordpress-tags
 set tags=./tags,./TAGS,tags,TAGS,~/hostpapa/hpcms-tags
 " vim: set ft=vim :
 
@@ -36,7 +37,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'leafgarland/typescript-vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
@@ -85,6 +85,24 @@ let g:ycm_semantic_triggers =  {
   \   'erlang': [':'],
   \ }
 
+" Tweking the fg and bg colors in color terminals in order
+" to have it looking more like ErrorMsg than SpellBad, which
+" looks horrible in dark terminals
+:hi SyntasticError ctermbg=1 ctermfg=15
+
+" Remaping tabs switching to capital H and capital L
+nnoremap H gT
+nnoremap L gt
+
+" Enabling Smarty template format
+" site: https://github.com/vim-scripts/smarty.vim
+"
+au BufRead,BufNewFile *.tpl set filetype=smarty
+au Filetype smarty exec('set dictionary=~/.vim/syntax/smarty.vim') 
+au Filetype smarty set complete+=k
+
+" Enabling Smarty template format for SilverStripe
+au BufNewFile,BufRead *.ss set filetype=smarty
 
 " ============================================
 " Airline
@@ -130,7 +148,14 @@ if !exists('g:vdebug_options')
 	let g:vdebug_options = {}
 endif
 let g:vdebug_options.port = 9000
-let g:vdebug_options.path_maps = { "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hpcms" }
+let g:vdebug_options.path_maps = {
+            \ "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hpcms",
+            \ "/var/www/local.srv.oneplan/current/" : "/var/www/html/opsite",
+            \ "/var/www/local.srv.support/current/" : "/var/www/html/kbwordpress",
+\ }
+
+"            \ "/var/www/local.srv.hostpapa/angular/legacy/" : "/var/www/html/hplegacy",
+
 let g:vdebug_options.break_on_open = 0
 
 " ============================================
