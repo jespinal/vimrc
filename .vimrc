@@ -1,4 +1,5 @@
-version 6.0
+scriptencoding utf-8
+set encoding=utf-8
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
@@ -17,6 +18,7 @@ unlet s:cpo_save
 set background=dark
 set backspace=indent,eol,start
 set cindent
+set wildmenu
 set completeopt=preview,menuone
 set cpoptions=aAceFsB
 set expandtab
@@ -33,7 +35,8 @@ set tags=./tags,./TAGS,tags,TAGS,~/hostpapa/hpcms-tags,~/hostpapa/hpangularform-
 " vim: set ft=vim :
 
 call plug#begin('~/.vim/plugged')
-Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
+"Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
+Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'HerringtonDarkholme/yats.vim'
@@ -41,7 +44,7 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
 Plug 'osfameron/perl-tags'
 Plug 'airblade/vim-gitgutter'
-Plug 'scrooloose/nerdtree', { 'on' : 'NERDTree' }
+Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeFind' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-vdebug/vdebug'
 Plug 'mileszs/ack.vim', { 'on' : 'Ag' }
@@ -80,6 +83,14 @@ function! PHPsynCHK()
 endfunction
 
 " ============================================
+" VimDiff configuration
+" ============================================
+" Setting default colorscheme for vimdiff
+if &diff
+    colorscheme default
+endif
+
+" ============================================
 " Syntastic configuration
 " ============================================
 " When using 'airline' you should NOT follow the recommendation outlined in
@@ -92,6 +103,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_php_checkers = ['php']
 let g:syntastic_enable_perl_checker = 1
+let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
 let g:ycm_collect_identifiers_from_tags_files = 1
 
 " https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support#vim
@@ -108,7 +120,7 @@ let g:ycm_semantic_triggers =  {
   \   'cpp,cuda,objcpp': ['->', '.', '::'],
   \   'perl': ['->'],
   \   'php': ['->', '::'],
-  \   'cs,d,elixir,go,groovy,java,javascript,julia,perl6,python,scala,typescript,vb': ['.'],
+  \   'cs,d,elixir,go,groovy,java,javascript,julia,perl,perl6,python,scala,typescript,vb': ['.'],
   \   'ruby,rust': ['.', '::'],
   \   'lua': ['.', ':'],
   \   'erlang': [':'],
@@ -119,11 +131,16 @@ let g:ycm_semantic_triggers =  {
 " looks horrible in dark terminals
 :hi SyntasticError ctermbg=1 ctermfg=15
 
+" ============================================
+" Tabs remaping
+" ============================================
 " Remaping tabs switching to capital H and capital L
 nnoremap H gT
 nnoremap L gt
 
-" Enabling Smarty template format
+" ============================================
+" Smarty Templates
+" ============================================
 " site: https://github.com/vim-scripts/smarty.vim
 "
 au BufRead,BufNewFile *.tpl set filetype=smarty
@@ -174,6 +191,36 @@ let g:tagbar_type_typescript = {
 \ }
 
 "============================================
+" GitGutter
+"============================================
+"
+" Customizing the signal column:
+"
+" Note: these colors can be specified as hexadecimal
+" values, or as a value from the highlight-ctermbg palette.
+" gnome-terminal tends to overwrite the palette with the current
+" theme colors
+"
+" a. Removing the console-terminal-background
+" b. Setting additions foreground color green
+" c. Setting changes foreground color skyblue
+" d. Setting delete to red
+"
+:hi SignColumn   term=bold ctermbg=NONE
+:hi GitGutterAdd term=bold ctermfg=2
+:hi GitGutterChange term=bold ctermfg=4
+:hi GitGutterDelete term=bold ctermfg=1
+
+let g:gitgutter_git_executable = '/usr/bin/git'
+
+" Get a list of counts of added, modified, and removed lines in the current buffer
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=%{GitStatus()}
+
+"============================================
 " NERDTree
 "============================================
 " In order to have NERDTree automatically start when vim starts up
@@ -187,19 +234,23 @@ if !exists('g:vdebug_options')
 endif
 let g:vdebug_options.port = 9000
 let g:vdebug_options.path_maps = {
-            \ "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hpcms",
-            \ "/var/www/local.srv.oneplan/current/" : "/var/www/html/opsite",
-            \ "/var/www/local.srv.support/current/" : "/var/www/html/kbwordpress",
+    \ "/var/www/local.srv.hostpapa/legacy" : "/var/www/html/hostpapa/hplegacy",
+    \ "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hostpapa/hpcms",
+    \ "/var/www/local.srv.oneplan/current/" : "/var/www/html/hostpapa/opsite",
+    \ "/var/www/local.srv.support/current/" : "/var/www/html/hostpapa/kbwordpress",
 \ }
 
 let g:vdebug_options.break_on_open = 0
+let g:vdebug_options.debug_file = "/tmp/vdebug.log"
+let g:vdebug_options.debug_file_level = 3
+"let g:vdebug_options.vdebug_force_ascii = 1
 
 " ============================================
 " phpcomplete.vim (replacement for 'omnifunc', for YouCompleteMe
 " ============================================
 "
 if has("autocmd") && exists("+omnifunc")
-autocmd FileType *
+autocmd FileType php,html
         \	if &omnifunc == "" |
         "\		setlocal omnifunc=syntaxcomplete#Complete |
         \		setlocal omnifunc=phpcomplete#Complete |
