@@ -34,6 +34,11 @@ set tabstop=4
 set tags=./tags,./TAGS,tags,TAGS,~/hostpapa/hpcms-tags,~/hostpapa/hpangularform-tags
 " vim: set ft=vim :
 
+" https://vi.stackexchange.com/questions/27399/whats-t-te-and-t-ti-added-by-vim-8
+" This terminal options were added to vim
+let &t_TI = ""
+let &t_TE = ""
+
 call plug#begin('~/.vim/plugged')
 "Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'majutsushi/tagbar'
@@ -50,6 +55,7 @@ Plug 'vim-vdebug/vdebug'
 Plug 'mileszs/ack.vim', { 'on' : 'Ag' }
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'ludovicchabant/vim-gutentags'
 call plug#end()
 
 "set number
@@ -104,12 +110,29 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_php_checkers = ['php']
 let g:syntastic_enable_perl_checker = 1
 let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
+
+" ============================================
+" YouCompleteMe
+" ============================================
+" LSP configuration
+"
+" if !exists("g:ycm_language_server")
+"     let g:ycm_language_server = []
+" endif
+" let g:ycm_language_server += [
+" \   {
+" \     'name': 'php',
+" \     'filetypes': [ 'php' ],
+" \     'port': 11111
+" \   },
+" \ ]
+
 let g:ycm_collect_identifiers_from_tags_files = 1
 
 " https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support#vim
 if !exists("g:ycm_semantic_triggers")
      let g:ycm_semantic_triggers = {}
- endif
+endif
 " let g:ycm_semantic_triggers['typescript'] = ['.']
 let g:ycm_semantic_triggers =  {
   \   'typescript': ['.'],
@@ -138,6 +161,9 @@ let g:ycm_semantic_triggers =  {
 nnoremap H gT
 nnoremap L gt
 
+" Using jk combination as "esc" key
+inoremap jk <esc>
+
 " ============================================
 " Smarty Templates
 " ============================================
@@ -164,6 +190,7 @@ au BufNewFile,BufRead *.ss set filetype=smarty
 " ============================================
 let g:airline#extensions#tagbar#enabled=1
 let g:airline#extensions#tagbar#flags='f'  " show function name in status bar
+let g:airline#extensions#gutentags#enabled = 1
 
 " ============================================
 " Airline Theme
@@ -174,6 +201,30 @@ let g:airline_theme='angr'
 " Tagbar
 " ============================================
 let g:tagbar_ctags_bin='~/bin/ctags'
+
+" ============================================
+" Gutentags
+" ============================================
+let g:gutentags_ctags_executable = "~/bin/ctags"
+let g:gutentags_trace = 0
+let g:gutentags_project_root = [
+    \ 'hostpapa',
+\]
+
+let g:gutentags_add_default_project_roots = 1
+
+let g:gutentags_ctags_exclude = [
+    \ 'themes/*',
+    \ 'puphpet/*',
+    \ 'vendor/*',
+    \ 'googlesitemaps/*',
+    \ 'minify/*',
+    \ 'Landers/*',
+    \ 'sqlite3/*',
+    \ 'phpunit/*',
+    \ 'framework/thirdparty*',
+    \ 'bootstrap-forms*'
+\]
 
 " Typescript ctags support
 let g:tagbar_type_typescript = {
@@ -220,6 +271,8 @@ function! GitStatus()
 endfunction
 set statusline+=%{GitStatus()}
 
+let g:gitgutter_max_signs = -1
+
 "============================================
 " NERDTree
 "============================================
@@ -232,7 +285,7 @@ set statusline+=%{GitStatus()}
 if !exists('g:vdebug_options')
     let g:vdebug_options = {}
 endif
-let g:vdebug_options.port = 9000
+let g:vdebug_options.port = 9500
 let g:vdebug_options.path_maps = {
     \ "/var/www/local.srv.hostpapa/legacy" : "/var/www/html/hostpapa/hplegacy",
     \ "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hostpapa/hpcms",
@@ -246,7 +299,7 @@ let g:vdebug_options.debug_file_level = 3
 "let g:vdebug_options.vdebug_force_ascii = 1
 
 " ============================================
-" phpcomplete.vim (replacement for 'omnifunc', for YouCompleteMe
+" phpcomplete.vim (replacement for 'omnifunc', for YouCompleteMe)
 " ============================================
 "
 if has("autocmd") && exists("+omnifunc")
@@ -256,6 +309,15 @@ autocmd FileType php,html
         \		setlocal omnifunc=phpcomplete#Complete |
         \	endif
 endif
+
+" When enabled the preview window's content will include information extracted from docblock comments of the completions.
+" Enabling this option will add return types to the completion menu for functions too. [default 0]
+let g:phpcomplete_parse_docblock_comments = 1
+
+" When enabled the <C-]> will be mapped to phpcomplete#JumpToDefinition() which will try to make a more educated guess of
+" the current symbol's location than simple tag search. If the symbol's location cannot be found the original <C-]>
+" functionality will be invoked [default 1]
+let g:phpcomplete_enhance_jump_to_definition = 1
 
 " ============================================
 " Ack.vim (configuration needed for _ag_)
