@@ -31,7 +31,7 @@ set shiftwidth=4
 set shortmess=filnxtToOc
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=4
-set tags=./tags,./TAGS,tags,TAGS,~/hostpapa/hpcms-tags,~/hostpapa/hpangularform-tags
+set tags=./tags;,tags
 " vim: set ft=vim :
 
 " https://vi.stackexchange.com/questions/27399/whats-t-te-and-t-ti-added-by-vim-8
@@ -40,22 +40,22 @@ let &t_TI = ""
 let &t_TE = ""
 
 call plug#begin('~/.vim/plugged')
-"Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
-Plug 'osfameron/perl-tags'
+Plug 'osfameron/perl-tags', { 'for': [ 'perl' ] }
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeFind' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-vdebug/vdebug'
 Plug 'mileszs/ack.vim', { 'on' : 'Ag' }
-Plug 'shawncplus/phpcomplete.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
+Plug 'craigemery/vim-autotag'
+" Plug 'junegunn/fzf.vim' 
 call plug#end()
 
 "set number
@@ -73,7 +73,7 @@ call plug#end()
 " This is based off of a snippet mentioned on http://vim.wikia.com/wiki/Runtime_syntax_check_for_php
 
 " Note: in Neovim, instead use %m\ in\ %f\ on\ line\ %l
-au FileType php,html setlocal makeprg=~/bin/phan_client
+au FileType php,html setlocal makeprg=~/bin/phan_client\ --daemonize-socket\ /var/run/user/1000/phan.socket
 au FileType php,html setlocal errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
 
 au! BufWritePost  *.php,*.html    call PHPsynCHK()
@@ -116,16 +116,18 @@ let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to insta
 " ============================================
 " LSP configuration
 "
-" if !exists("g:ycm_language_server")
-"     let g:ycm_language_server = []
-" endif
-" let g:ycm_language_server += [
-" \   {
-" \     'name': 'php',
-" \     'filetypes': [ 'php' ],
-" \     'port': 11111
-" \   },
-" \ ]
+" Note: this is a symlink to my \$HOME/bin folder
+"
+if !exists("g:ycm_language_server")
+    let g:ycm_language_server = []
+endif
+let g:ycm_language_server += [
+\   {
+\     'name': 'php',
+\     'cmdline': [ '/home/jespinal/bin/phpactor', 'language-server' ], 
+\     'filetypes': [ 'php' ],
+\   },
+\ ]
 
 let g:ycm_collect_identifiers_from_tags_files = 1
 
@@ -133,7 +135,7 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 if !exists("g:ycm_semantic_triggers")
      let g:ycm_semantic_triggers = {}
 endif
-" let g:ycm_semantic_triggers['typescript'] = ['.']
+
 let g:ycm_semantic_triggers =  {
   \   'typescript': ['.'],
   \   'c': ['->', '.'],
@@ -148,6 +150,15 @@ let g:ycm_semantic_triggers =  {
   \   'lua': ['.', ':'],
   \   'erlang': [':'],
   \ }
+
+" Turning off Hover window by default
+let g:ycm_auto_hover=''
+
+" The logging level that YCM and the ycmd completion server use.
+" Valid values are the following, from most verbose to least verbose: - debug - info - warning - error - critical
+let g:ycm_log_level='critical'
+
+nmap <leader>D <plug>(YCMHover)
 
 " Tweaking the fg and bg colors in color terminals in order
 " to have it looking more like ErrorMsg than SpellBad, which
@@ -176,15 +187,6 @@ au Filetype smarty set complete+=k
 " Enabling Smarty template format for SilverStripe
 au BufNewFile,BufRead *.ss set filetype=smarty
 
-"" Go to last file(s) if invoked without arguments.
-"autocmd VimLeave * nested if (!isdirectory($HOME . "/.vim")) |
-"    \ call mkdir($HOME . "/.vim") |
-"    \ endif |
-"    \ execute "mksession! " . $HOME . "/.vim/Session.vim"
-"
-"autocmd VimEnter * nested if argc() == 0 && filereadable($HOME . "/.vim/Session.vim") |
-"    \ execute "source " . $HOME . "/.vim/Session.vim"
-
 " ============================================
 " Airline
 " ============================================
@@ -202,30 +204,6 @@ let g:airline_theme='angr'
 " ============================================
 let g:tagbar_ctags_bin='~/bin/ctags'
 
-" ============================================
-" Gutentags
-" ============================================
-let g:gutentags_ctags_executable = "~/bin/ctags"
-let g:gutentags_trace = 0
-let g:gutentags_project_root = [
-    \ 'hostpapa',
-\]
-
-let g:gutentags_add_default_project_roots = 1
-
-let g:gutentags_ctags_exclude = [
-    \ 'themes/*',
-    \ 'puphpet/*',
-    \ 'vendor/*',
-    \ 'googlesitemaps/*',
-    \ 'minify/*',
-    \ 'Landers/*',
-    \ 'sqlite3/*',
-    \ 'phpunit/*',
-    \ 'framework/thirdparty*',
-    \ 'bootstrap-forms*'
-\]
-
 " Typescript ctags support
 let g:tagbar_type_typescript = {
   \ 'ctagstype': 'typescript',
@@ -240,6 +218,30 @@ let g:tagbar_type_typescript = {
     \ 'e:enums',
   \ ]
 \ }
+
+" ============================================
+" Gutentags
+" ============================================
+"let g:gutentags_ctags_executable = "~/bin/ctags"
+"let g:gutentags_trace = 0
+"let g:gutentags_project_root = [
+"    \ 'hostpapa',
+"\]
+"
+"let g:gutentags_add_default_project_roots = 1
+"
+"let g:gutentags_ctags_exclude = [
+"    \ 'themes/*',
+"    \ 'puphpet/*',
+"    \ 'vendor/*',
+"    \ 'googlesitemaps/*',
+"    \ 'minify/*',
+"    \ 'Landers/*',
+"    \ 'sqlite3/*',
+"    \ 'phpunit/*',
+"    \ 'framework/thirdparty*',
+"    \ 'bootstrap-forms*'
+"\]
 
 "============================================
 " GitGutter
@@ -299,25 +301,15 @@ let g:vdebug_options.debug_file_level = 3
 "let g:vdebug_options.vdebug_force_ascii = 1
 
 " ============================================
-" phpcomplete.vim (replacement for 'omnifunc', for YouCompleteMe)
+" Replacement for 'omnifunc'
 " ============================================
 "
 if has("autocmd") && exists("+omnifunc")
 autocmd FileType php,html
         \	if &omnifunc == "" |
-        "\		setlocal omnifunc=syntaxcomplete#Complete |
-        \		setlocal omnifunc=phpcomplete#Complete |
+        \       setlocal omnifunc=phpactor#Complete |
         \	endif
 endif
-
-" When enabled the preview window's content will include information extracted from docblock comments of the completions.
-" Enabling this option will add return types to the completion menu for functions too. [default 0]
-let g:phpcomplete_parse_docblock_comments = 1
-
-" When enabled the <C-]> will be mapped to phpcomplete#JumpToDefinition() which will try to make a more educated guess of
-" the current symbol's location than simple tag search. If the symbol's location cannot be found the original <C-]>
-" functionality will be invoked [default 1]
-let g:phpcomplete_enhance_jump_to_definition = 1
 
 " ============================================
 " Ack.vim (configuration needed for _ag_)
@@ -333,12 +325,6 @@ endif
 " Fuzzy Finder: installed via Linuxbrew
 " ============================================
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
-
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
