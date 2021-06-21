@@ -55,7 +55,7 @@ Plug 'mileszs/ack.vim', { 'on' : 'Ag' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 Plug 'craigemery/vim-autotag'
-" Plug 'junegunn/fzf.vim' 
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 "set number
@@ -73,7 +73,8 @@ call plug#end()
 " This is based off of a snippet mentioned on http://vim.wikia.com/wiki/Runtime_syntax_check_for_php
 
 " Note: in Neovim, instead use %m\ in\ %f\ on\ line\ %l
-au FileType php,html setlocal makeprg=~/bin/phan_client\ --daemonize-socket\ /var/run/user/1000/phan.socket
+"au FileType php,html setlocal makeprg=~/bin/phan_client\ --daemonize-socket\ /var/run/user/1000/phan.socket
+au FileType php,html setlocal makeprg=~/bin/phan_client\ --daemonize-tcp-port\ default
 au FileType php,html setlocal errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
 
 au! BufWritePost  *.php,*.html    call PHPsynCHK()
@@ -300,6 +301,20 @@ let g:vdebug_options.debug_file = "/tmp/vdebug.log"
 let g:vdebug_options.debug_file_level = 3
 "let g:vdebug_options.vdebug_force_ascii = 1
 
+" :help Vdebug, #VdebugFeatures:
+" https://xdebug.org/docs/dbgp#feature-names
+"
+" The DBGP protocol allows you to set features for debugging, such as the max
+" length of data that the debugger returns. You can set these features in the Vim
+" dictionary g:vdebug_features, and they will be sent to the debugger when you
+" start a new debugging session.
+"
+" For example:
+"    let g:vdebug_features['max_depth'] = 2048
+"
+" max number of array or object children to initially retrieve
+let g:vdebug_features = { 'max_children': 512 }
+
 " ============================================
 " Replacement for 'omnifunc'
 " ============================================
@@ -364,6 +379,8 @@ let g:fzf_colors =
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
 " ============================================
 " Highlight variable under the cursor
