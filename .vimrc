@@ -56,6 +56,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 Plug 'craigemery/vim-autotag'
 Plug 'tpope/vim-fugitive'
+Plug 'lumiliet/vim-twig'
 call plug#end()
 
 "set number
@@ -95,6 +96,10 @@ endfunction
 " Setting default colorscheme for vimdiff
 if &diff
     colorscheme default
+    hi DiffAdd      ctermfg=NONE          ctermbg=Green
+    hi DiffChange   ctermfg=NONE          ctermbg=NONE
+    hi DiffDelete   ctermfg=LightBlue     ctermbg=NONE
+    hi DiffText     ctermfg=Yellow        ctermbg=NONE
 endif
 
 " ============================================
@@ -108,9 +113,10 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_php_checkers = ['php']
+let g:syntastic_php_checkers = ['php', 'phpcs']
 let g:syntastic_enable_perl_checker = 1
 let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
+let g:syntastic_shell = "/bin/bash"
 
 " ============================================
 " YouCompleteMe
@@ -165,6 +171,7 @@ nmap <leader>D <plug>(YCMHover)
 " to have it looking more like ErrorMsg than SpellBad, which
 " looks horrible in dark terminals
 :hi SyntasticError ctermbg=1 ctermfg=15
+:hi SyntasticWarning cterm=NONE
 
 " ============================================
 " Tabs remaping
@@ -187,6 +194,10 @@ au Filetype smarty set complete+=k
 
 " Enabling Smarty template format for SilverStripe
 au BufNewFile,BufRead *.ss set filetype=smarty
+
+"" Set the filetype based on the file's extension, overriding any
+"" 'filetype' that has already been set
+"au BufRead,BufNewFile *.html.twig set filetype=html
 
 " ============================================
 " Airline
@@ -294,11 +305,12 @@ let g:vdebug_options.path_maps = {
     \ "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hostpapa/hpcms",
     \ "/var/www/local.srv.oneplan/current/" : "/var/www/html/hostpapa/opsite",
     \ "/var/www/local.srv.support/current/" : "/var/www/html/hostpapa/kbwordpress",
+    "\ "/var/www/ubersmith_root/app/custom/plugins/psg-uber-payment-gateway-plugin" : "/var/www/html/hostpapa/hp-ubersmith-payment-gw-plugin",
 \ }
 
-let g:vdebug_options.break_on_open = 0
+let g:vdebug_options.break_on_open = 0 
 let g:vdebug_options.debug_file = "/tmp/vdebug.log"
-let g:vdebug_options.debug_file_level = 3
+let g:vdebug_options.debug_file_level = 4 
 "let g:vdebug_options.vdebug_force_ascii = 1
 
 " :help Vdebug, #VdebugFeatures:
@@ -394,6 +406,7 @@ set nohls
 " In many terminal emulators the mouse works just fine, use this to enable it
 if has('mouse')
     "set mouse=a
+    "set mouse-=a
 endif
 
 " Only do this part when compiled with support for autocommands.
