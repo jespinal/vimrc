@@ -131,7 +131,7 @@ endif
 let g:ycm_language_server += [
 \   {
 \     'name': 'php',
-\     'cmdline': [ '/home/jespinal/bin/phpactor', 'language-server' ], 
+\     'cmdline': ['php', '/home/jespinal/bin/phpactor', 'language-server' ], " ADJUST
 \     'filetypes': [ 'php' ],
 \   },
 \ ]
@@ -157,6 +157,16 @@ let g:ycm_semantic_triggers =  {
   \   'lua': ['.', ':'],
   \   'erlang': [':'],
   \ }
+
+" By default, semantic completion is triggered automatically after typing
+" ., -> and :: in insert mode (if semantic completion support has been compiled
+" in). This key mapping can be used to trigger semantic completion anywhere.
+" Useful for searching for top-level functions and classes.
+let g:ycm_key_invoke_completion = '<C-Space>'
+
+" By unsetting this option you can ensure that the omnicompletion engine is
+" re-queried on every keypress.
+let g:ycm_cache_omnifunc = 0
 
 " Turning off Hover window by default
 let g:ycm_auto_hover=''
@@ -276,6 +286,7 @@ let g:tagbar_type_typescript = {
 :hi GitGutterChange term=bold ctermfg=4
 :hi GitGutterDelete term=bold ctermfg=1
 
+" ADJUST
 let g:gitgutter_git_executable = '/usr/bin/git'
 
 " Get a list of counts of added, modified, and removed lines in the current buffer
@@ -308,9 +319,9 @@ let g:vdebug_options.path_maps = {
     "\ "/var/www/ubersmith_root/app/custom/plugins/psg-uber-payment-gateway-plugin" : "/var/www/html/hostpapa/hp-ubersmith-payment-gw-plugin",
 \ }
 
-let g:vdebug_options.break_on_open = 0 
+let g:vdebug_options.break_on_open = 0
 let g:vdebug_options.debug_file = "/tmp/vdebug.log"
-let g:vdebug_options.debug_file_level = 4 
+let g:vdebug_options.debug_file_level = 4
 "let g:vdebug_options.vdebug_force_ascii = 1
 
 " :help Vdebug, #VdebugFeatures:
@@ -351,6 +362,7 @@ endif
 " ============================================
 " Fuzzy Finder: installed via Linuxbrew
 " ============================================
+" ADJUST
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 
 " An action can be a reference to a function that processes selected lines
