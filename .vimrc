@@ -34,10 +34,17 @@ set tabstop=4
 set tags=./tags;,tags
 " vim: set ft=vim :
 
+" ============================================
 " https://vi.stackexchange.com/questions/27399/whats-t-te-and-t-ti-added-by-vim-8
 " This terminal options were added to vim
+" ============================================
 let &t_TI = ""
 let &t_TE = ""
+
+" ============================================
+" Determining current platform.
+" ============================================
+let current_platform = substitute(system('uname'), '\n', '', '')
 
 call plug#begin('~/.vim/plugged')
 Plug 'majutsushi/tagbar'
@@ -57,10 +64,17 @@ Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --n
 Plug 'craigemery/vim-autotag'
 Plug 'tpope/vim-fugitive'
 Plug 'lumiliet/vim-twig'
+Plug 'fatih/vim-go'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
-"set number
-"set relativenumber
+" ============================================
+" Enabling relative line numbers and nomral
+" line numbers
+" ============================================
+" set number
+" set relativenumber
 
 " ============================================
 " Phan + vim
@@ -103,6 +117,19 @@ if &diff
 endif
 
 " ============================================
+" Gvim color scheme
+" ============================================
+if has("gui_running")
+    "colorscheme elfond
+    "colorscheme darkblue
+    colorscheme industry
+    "colorscheme koeller
+    "colorscheme murphy
+    "colorscheme slate
+    "colorscheme torte
+endif
+
+" ============================================
 " Syntastic configuration
 " ============================================
 " When using 'airline' you should NOT follow the recommendation outlined in
@@ -116,7 +143,12 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_php_checkers = ['php', 'phpcs']
 let g:syntastic_enable_perl_checker = 1
 let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
-let g:syntastic_shell = "/bin/bash"
+
+if current_platform == "FreeBSD"
+    let g:syntastic_shell = "/usr/local/bin/bash"
+elseif current_platform == "Linux"
+    let g:syntastic_shell = "/bin/bash"
+endif
 
 " ============================================
 " YouCompleteMe
@@ -131,7 +163,7 @@ endif
 let g:ycm_language_server += [
 \   {
 \     'name': 'php',
-\     'cmdline': ['php', '/home/jespinal/bin/phpactor', 'language-server' ], " ADJUST
+\     'cmdline': ['php', '/home/jespinal/bin/phpactor', 'language-server' ],
 \     'filetypes': [ 'php' ],
 \   },
 \ ]
@@ -168,6 +200,8 @@ let g:ycm_key_invoke_completion = '<C-Space>'
 " re-queried on every keypress.
 let g:ycm_cache_omnifunc = 0
 
+let g:ycm_autoclose_preview_window_after_completion = 1
+
 " Turning off Hover window by default
 let g:ycm_auto_hover=''
 
@@ -190,8 +224,18 @@ nmap <leader>D <plug>(YCMHover)
 nnoremap H gT
 nnoremap L gt
 
+" ============================================
 " Using jk combination as "esc" key
+" ============================================
 inoremap jk <esc>
+inoremap kj <esc>
+
+" ============================================
+" Enclosing words into "", {}, and ()
+" ============================================
+nmap \" <Esc>Bvexi""<Esc>P
+nmap \( <Esc>Bvexi()<Esc>P
+nmap \{ <Esc>Bvexi{}<Esc>P
 
 " ============================================
 " Smarty Templates
@@ -286,8 +330,11 @@ let g:tagbar_type_typescript = {
 :hi GitGutterChange term=bold ctermfg=4
 :hi GitGutterDelete term=bold ctermfg=1
 
-" ADJUST
-let g:gitgutter_git_executable = '/usr/bin/git'
+if current_platform == "FreeBSD"
+    let g:gitgutter_git_executable = '/usr/local/bin/git'
+elseif current_platform == "Linux"
+    let g:gitgutter_git_executable = '/usr/bin/git'
+endif
 
 " Get a list of counts of added, modified, and removed lines in the current buffer
 function! GitStatus()
@@ -362,8 +409,11 @@ endif
 " ============================================
 " Fuzzy Finder: installed via Linuxbrew
 " ============================================
-" ADJUST
-set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+if current_platform == "FreeBSD"
+    set rtp+=/usr/local/bin/fzf
+elseif current_platform == "Linux"
+    set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+endif
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
@@ -418,7 +468,7 @@ set nohls
 " In many terminal emulators the mouse works just fine, use this to enable it
 if has('mouse')
     "set mouse=a
-    "set mouse-=a
+    set mouse-=a
 endif
 
 " Only do this part when compiled with support for autocommands.
