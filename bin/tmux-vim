@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ -z "$TMUX" ]; then
+    tmux new-session "vim $@";
+else
+    env vim $@
+fi
