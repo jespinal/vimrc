@@ -73,8 +73,8 @@ call plug#end()
 " Enabling relative line numbers and nomral
 " line numbers
 " ============================================
-" set number
-" set relativenumber
+set number
+set relativenumber
 
 " ============================================
 " Phan + vim
