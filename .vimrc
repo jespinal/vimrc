@@ -53,7 +53,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
-Plug 'osfameron/perl-tags', { 'for': [ 'perl' ] }
+"Plug 'osfameron/perl-tags', { 'for': [ 'perl' ] }
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeFind' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -67,6 +67,7 @@ Plug 'lumiliet/vim-twig'
 Plug 'fatih/vim-go'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'rust-lang/rust.vim'
 call plug#end()
 
 " ============================================
@@ -97,7 +98,7 @@ au! BufWritePost  *.php,*.html    call PHPsynCHK()
 function! PHPsynCHK()
   let winnum =winnr() " get current window number
   " or 'silent make --disable-usage-on-error -l %' in Phan 0.12.3+
-  silent make -l %
+  silent make! -l %
   cw " open the error window if it contains an error. Don't limit the number of lines.
   " return to the window with cursor set on the line of the first error (if any)
   execute winnum . "wincmd w"
@@ -141,8 +142,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_php_checkers = ['php', 'phpcs']
-let g:syntastic_enable_perl_checker = 1
-let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
+let g:syntastic_enable_perl_checker = 0
+"let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
+let g:syntastic_perl_checkers = [] " Note: remember to install Perl::Critic via CPAN
 
 if current_platform == "FreeBSD"
     let g:syntastic_shell = "/usr/local/bin/bash"
