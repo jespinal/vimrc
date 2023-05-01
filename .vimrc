@@ -78,6 +78,29 @@ set number
 set relativenumber
 
 " ============================================
+" Setting 'ttimeoutlen' in order to avoid a long timeout
+" when Shift-O is pressed.
+" ============================================
+"
+" The time in milliseconds that is waited for a key code or mapped key
+" sequence to complete.  Also used for CTRL-\ CTRL-N and CTRL-\ CTRL-G
+" when part of a command has been typed.
+"
+" Normally only 'timeoutlen' is used and 'ttimeoutlen' is -1.  When a
+" different timeout value for key codes is desired set 'ttimeoutlen' to
+" a non-negative number.
+"
+" ttimeoutlen	mapping delay	   key code delay	~
+"     < 0		'timeoutlen'	   'timeoutlen'
+"     >= 0		'timeoutlen'	   'ttimeoutlen'
+"
+" The timeout only happens when the 'timeout' and 'ttimeout' options
+" tell so.  A useful setting would be >
+"     :set timeout timeoutlen=3000 ttimeoutlen=100
+" ============================================
+set ttimeoutlen=100
+
+" ============================================
 " Phan + vim
 " ============================================
 " https://github.com/phan/phan/blob/master/plugins/vim/phansnippet.vim
