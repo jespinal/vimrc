@@ -53,6 +53,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
+"Plug 'Quramy/tsuquyomi'
 "Plug 'osfameron/perl-tags', { 'for': [ 'perl' ] }
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeFind' }
@@ -68,7 +69,15 @@ Plug 'fatih/vim-go'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'rust-lang/rust.vim'
+Plug 'puremourning/vimspector'
 call plug#end()
+
+
+" ============================================
+" vimspector
+" ============================================
+" Standard mappings
+let g:vimspector_enable_mappings = 'HUMAN'
 
 " ============================================
 " Enabling relative line numbers and nomral
@@ -134,10 +143,10 @@ endfunction
 " Setting default colorscheme for vimdiff
 if &diff
     colorscheme default
-    hi DiffAdd      ctermfg=NONE          ctermbg=Green
-    hi DiffChange   ctermfg=NONE          ctermbg=NONE
-    hi DiffDelete   ctermfg=LightBlue     ctermbg=NONE
-    hi DiffText     ctermfg=Yellow        ctermbg=NONE
+    hi DiffAdd      ctermfg=White     ctermbg=DarkGreen
+    hi DiffDelete   ctermfg=LightBlue ctermbg=NONE
+    hi DiffText     ctermfg=White     ctermbg=DarkCyan " This applies only to the changed text, not the entire line.
+    hi DiffChange   ctermfg=White     ctermbg=DarkCyan
 endif
 
 " ============================================
