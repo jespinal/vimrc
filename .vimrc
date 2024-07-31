@@ -69,7 +69,8 @@ Plug 'fatih/vim-go'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'rust-lang/rust.vim'
-Plug 'puremourning/vimspector'
+"Plug 'puremourning/vimspector'
+Plug 'rafi/awesome-vim-colorschemes'
 call plug#end()
 
 
@@ -177,6 +178,14 @@ let g:syntastic_php_checkers = ['php', 'phpcs']
 let g:syntastic_enable_perl_checker = 0
 "let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
 let g:syntastic_perl_checkers = [] " Note: remember to install Perl::Critic via CPAN
+" https://github.com/friendsoftwig/twigcs
+" =======================================
+let g:syntastic_twig_twigcs_exec = 'php'
+let g:syntastic_twig_twigcs_exe = 'php ~/.config/composer/vendor/friendsoftwig/twigcs/bin/twigcs'
+" =======================================
+" https://github.com/asm89/twig-lint
+let g:syntastic_twig_twiglint_exec = 'php'
+let g:syntastic_twig_twiglint_exe = 'php ~/.config/composer/vendor/asm89/twig-lint/bin/twig-lint'
 
 if current_platform == "FreeBSD"
     let g:syntastic_shell = "/usr/local/bin/bash"
@@ -197,7 +206,7 @@ endif
 let g:ycm_language_server += [
 \   {
 \     'name': 'php',
-\     'cmdline': ['php', '/home/jespinal/bin/phpactor', 'language-server' ],
+\     'cmdline': ['/usr/bin/php8.2', '/home/jespinal/bin/phpactor', 'language-server' ],
 \     'filetypes': [ 'php' ],
 \   },
 \ ]
