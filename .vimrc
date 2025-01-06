@@ -65,7 +65,7 @@ Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --n
 Plug 'craigemery/vim-autotag'
 Plug 'tpope/vim-fugitive'
 Plug 'lumiliet/vim-twig'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'rust-lang/rust.vim'
@@ -175,9 +175,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_php_checkers = ['php', 'phpcs']
-let g:syntastic_enable_perl_checker = 0
+let g:syntastic_enable_perl_checker = 1 
 "let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
-let g:syntastic_perl_checkers = [] " Note: remember to install Perl::Critic via CPAN
+let g:syntastic_perl_checkers = ['perl'] " Note: remember to install Perl::Critic via CPAN
 " https://github.com/friendsoftwig/twigcs
 " =======================================
 let g:syntastic_twig_twigcs_exec = 'php'
