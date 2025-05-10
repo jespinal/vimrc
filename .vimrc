@@ -42,6 +42,13 @@ let &t_TI = ""
 let &t_TE = ""
 
 " ============================================
+" https://github.com/ryanoasis/vim-devicons/issues/359
+" Disabling additional terminal options that were apparently added
+" 13-Feb-2025: post system upgrade to latest LTS
+" ============================================
+let &t_RV = ""
+
+" ============================================
 " Determining current platform.
 " ============================================
 let current_platform = substitute(system('uname'), '\n', '', '')
@@ -69,8 +76,9 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'rust-lang/rust.vim'
-"Plug 'puremourning/vimspector'
 Plug 'rafi/awesome-vim-colorschemes'
+Plug 'github/copilot.vim'
+"Plug 'puremourning/vimspector'
 call plug#end()
 
 
@@ -139,6 +147,12 @@ function! PHPsynCHK()
 endfunction
 
 " ============================================
+" Vim Colorscheme configuration
+" ============================================
+colorscheme tender
+"colorscheme OceanicNext
+
+" ============================================
 " VimDiff configuration
 " ============================================
 " Setting default colorscheme for vimdiff
@@ -154,9 +168,16 @@ endif
 " Gvim color scheme
 " ============================================
 if has("gui_running")
+    if filereadable(expand('~/.gvimrc'))
+        source ~/.gvimrc
+    else
+        echo "Local Gvim overrides file not found (ignoring)"
+    endif
+
+    colorscheme OceanicNext
     "colorscheme elfond
     "colorscheme darkblue
-    colorscheme industry
+    "colorscheme industry
     "colorscheme koeller
     "colorscheme murphy
     "colorscheme slate
