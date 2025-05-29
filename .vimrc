@@ -416,6 +416,11 @@ let g:gitgutter_max_signs = -1
 " autocmd vimenter * NERDTree
 
 " ============================================
+" SystemD syntax highlight
+" ============================================
+autocmd BufNewFile,BufRead *.service* set ft=systemd
+
+" ============================================
 " Vdebug
 " ============================================
 if !exists('g:vdebug_options')
