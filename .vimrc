@@ -60,8 +60,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
-"Plug 'Quramy/tsuquyomi'
-"Plug 'osfameron/perl-tags', { 'for': [ 'perl' ] }
+Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeFind' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -70,8 +69,7 @@ Plug 'mileszs/ack.vim', { 'on' : 'Ag' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 Plug 'craigemery/vim-autotag'
-Plug 'tpope/vim-fugitive'
-Plug 'lumiliet/vim-twig'
+"Plug 'lumiliet/vim-twig'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -185,34 +183,61 @@ if has("gui_running")
 endif
 
 " ============================================
-" Syntastic configuration
+" Copilot
 " ============================================
-" When using 'airline' you should NOT follow the recommendation outlined in
-" the |syntastic-statusline-flag| section above to modify your |'statusline'|.
-" airline" shall make all necessary changes automatically.
-"
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_php_checkers = ['php', 'phpcs']
-let g:syntastic_enable_perl_checker = 1 
-"let g:syntastic_perl_checkers = ['perl', 'perlcritic'] " Note: remember to install Perl::Critic via CPAN
-let g:syntastic_perl_checkers = ['perl'] " Note: remember to install Perl::Critic via CPAN
-" https://github.com/friendsoftwig/twigcs
-" =======================================
-let g:syntastic_twig_twigcs_exec = 'php'
-let g:syntastic_twig_twigcs_exe = 'php ~/.config/composer/vendor/friendsoftwig/twigcs/bin/twigcs'
-" =======================================
-" https://github.com/asm89/twig-lint
-let g:syntastic_twig_twiglint_exec = 'php'
-let g:syntastic_twig_twiglint_exe = 'php ~/.config/composer/vendor/asm89/twig-lint/bin/twig-lint'
+let g:copilot_enabled = v:false
 
-if current_platform == "FreeBSD"
-    let g:syntastic_shell = "/usr/local/bin/bash"
-elseif current_platform == "Linux"
-    let g:syntastic_shell = "/bin/bash"
-endif
+" ============================================
+" ALE
+" https://github.com/dense-analysis/ale
+" ============================================
+" ALE also offers its own automatic completion support, which does not require
+" any other plugins, and can be enabled by changing a setting before ALE is
+" loaded.
+"
+" You should not turn this setting on if you wish to use ALE as a completion
+" source for other completion plugins, like Deoplete.
+" let g:ale_completion_enabled = 1
+"
+" Note: YCM is a dedicated, powerful completer (backed by Clang, Jedi,
+" TSServer, etc.) and generally faster/more accurate for code completion.
+let g:ale_completion_enabled = 0
+
+" ALE supports automatic imports from external modules. This behavior is
+" enabled by default and can be disabled by setting:
+" let g:ale_completion_autoimport = 0
+
+" You configure your fixers from vimrc using g:ale_fixers, before or after ALE
+" has been loaded.
+"
+" A * in place of the filetype will apply a List of fixers to all files which
+" do not match some filetype in the Dictionary.
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint', 'remove_trailing_lines', 'trim_whitespace'],
+\   'typescript': ['eslint', 'remove_trailing_lines', 'trim_whitespace'],
+\}
+
+" If you want to automatically fix files when you save them, you need to turn
+" a setting on in vimrc.
+let g:ale_fix_on_save = 1
+
+" vim-airline integrates with ALE for displaying error information in the status
+" bar. If you want to see the status for ALE in a nice format, it is recommended
+" to use vim-airline with ALE.
+
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1"
+
+" By default, ALE displays errors and warnings with virtual text. The problems
+" ALE shows appear with comment-like syntax after every problem found. You can
+" set ALE to only show problems where the cursor currently lies like so.
+"
+" let g:ale_virtualtext_cursor = 'current'
+"
+" If you want to disable virtual text completely, apply the following.
+"
+" let g:ale_virtualtext_cursor = 'disabled'
 
 " ============================================
 " YouCompleteMe
@@ -274,6 +299,9 @@ let g:ycm_auto_hover=''
 let g:ycm_log_level='critical'
 
 nmap <leader>D <plug>(YCMHover)
+
+" Since ALE shows lint errors, you can disable YCM's diagnostics to reduce noise:
+" let g:ycm_show_diagnostics_ui = 0  " Let ALE handle errors/warnings
 
 " Tweaking the fg and bg colors in color terminals in order
 " to have it looking more like ErrorMsg than SpellBad, which
