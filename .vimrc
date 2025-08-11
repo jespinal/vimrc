@@ -144,6 +144,16 @@ function! PHPsynCHK()
   :redraw!
 endfunction
 
+" Function to generate a random alphanumeric string
+function! RandomString()
+  let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let result = ''
+  for i in range(8)
+    let result .= chars[rand() % len(chars)]
+  endfor
+  return result
+endfunction
+
 " ============================================
 " Vim Colorscheme configuration
 " ============================================
@@ -456,11 +466,11 @@ if !exists('g:vdebug_options')
 endif
 let g:vdebug_options.port = 9500
 let g:vdebug_options.path_maps = {
-    \ "/var/www/local.srv.hostpapa/legacy" : "/var/www/html/hostpapa/hplegacy",
-    \ "/var/www/local.srv.hostpapa/cms/current" : "/var/www/html/hostpapa/hpcms",
-    \ "/var/www/local.srv.oneplan/current/" : "/var/www/html/hostpapa/opsite",
-    \ "/var/www/local.srv.support/current/" : "/var/www/html/hostpapa/kbwordpress",
-    "\ "/var/www/ubersmith_root/app/custom/plugins/psg-uber-payment-gateway-plugin" : "/var/www/html/hostpapa/hp-ubersmith-payment-gw-plugin",
+    \ "/var/www/local.srv.hostpapa/legacy" : "/home/jespinal/Projects/HostPapa/hplegacy",
+    \ "/var/www/local.srv.hostpapa/cms/current" : "/home/jespinal/Projects/HostPapa/hpcms",
+    \ "/var/www/local.srv.oneplan/current/" : "/home/jespinal/Projects/HostPapa/opsite",
+    \ "/var/www/local.srv.support/current/" : "/home/jespinal/Projects/HostPapa/kbwordpress",
+    "\ "/var/www/ubersmith_root/app/custom/plugins/psg-uber-payment-gateway-plugin" : "/home/jespinal/Projects/HostPapa/hp-ubersmith-payment-gw-plugin",
 \ }
 
 let g:vdebug_options.break_on_open = 0
