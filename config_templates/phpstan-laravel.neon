@@ -1,0 +1,146 @@
+# PHPStan Configuration for Laravel Projects
+# This configuration inherits from the base configuration and adds Laravel-specific settings
+
+# Include base configuration
+includes:
+    - phpstan-base.neon
+    # Include Laravel-specific PHPStan extension (if installed)
+    # - vendor/phpstan/phpstan-laravel/extension.neon
+
+parameters:
+    # Override or extend base settings
+    level: 6
+    
+    # Laravel-specific paths
+    paths:
+        - app
+        - config
+        - database
+        - resources
+        - routes
+        - tests
+    
+    # Laravel-specific exclusions
+    excludePaths:
+        # Inherit from base configuration and add Laravel-specific ones
+        - vendor/*
+        - var/cache/*
+        - cache/*
+        - var/logs/*
+        - logs/*
+        - tmp/*
+        - temp/*
+        - build/*
+        - dist/*
+        - node_modules/*
+        - .idea/*
+        - .vscode/*
+        - *.swp
+        - *.swo
+        - *~
+        # Laravel-specific exclusions
+        - storage/*
+        - bootstrap/cache/*
+        - public/build/*
+        - public/hot/*
+        - public/storage/*
+        - database/migrations/*
+        - database/seeders/*
+        - resources/views/*
+        - resources/lang/*
+        - resources/js/*
+        - resources/css/*
+    
+    # Laravel-specific ignore patterns
+    ignoreErrors:
+        # Inherit from base configuration
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::#'
+        - '#Access to an undefined property [a-zA-Z0-9\\_]+::\$#'
+        - '#Parameter \$[a-zA-Z0-9_]+ of method [a-zA-Z0-9\\_]+::[a-zA-Z0-9_]+\(\) has invalid type#'
+        - '#Return type of method [a-zA-Z0-9\\_]+::[a-zA-Z0-9_]+\(\) has invalid type#'
+        # Laravel-specific patterns
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::#'
+        - '#Call to an undefined method Illuminate\\Database\\Query\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Http\\Request::#'
+        - '#Call to an undefined method Illuminate\\Http\\Response::#'
+        - '#Call to an undefined method Illuminate\\Support\\Collection::#'
+        - '#Call to an undefined method Illuminate\\Support\\Str::#'
+        - '#Call to an undefined method Illuminate\\Support\\Arr::#'
+        - '#Call to an undefined method Illuminate\\Support\\Carbon::#'
+        - '#Call to an undefined method Illuminate\\Routing\\Router::#'
+        - '#Call to an undefined method Illuminate\\View\\View::#'
+        - '#Call to an undefined method Illuminate\\Mail\\Message::#'
+        - '#Call to an undefined method Illuminate\\Notifications\\Notification::#'
+        - '#Call to an undefined method Illuminate\\Events\\Dispatcher::#'
+        - '#Call to an undefined method Illuminate\\Cache\\Repository::#'
+        - '#Call to an undefined method Illuminate\\Session\\Store::#'
+        - '#Call to an undefined method Illuminate\\Auth\\Guard::#'
+        - '#Call to an undefined method Illuminate\\Validation\\Validator::#'
+        - '#Call to an undefined method Illuminate\\Database\\Schema\\Blueprint::#'
+        - '#Call to an undefined method Illuminate\\Database\\Migrations\\Migration::#'
+        - '#Call to an undefined method Illuminate\\Console\\Command::#'
+        - '#Call to an undefined method Illuminate\\Foundation\\Application::#'
+        - '#Call to an undefined method Illuminate\\Container\\Container::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Foundation\\Application::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Container\\Container::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Events\\Dispatcher::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Cache\\Repository::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Session\\Session::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Guard::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Validation\\Validator::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\View\\View::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Mail\\Mailer::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Notifications\\Dispatcher::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\Registrar::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\UrlGenerator::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\ResponseFactory::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\Redirector::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Connection::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Query\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Eloquent\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Eloquent\\Model::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Schema\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Schema\\Blueprint::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Migrations\\Migration::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Console\\Kernel::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Console\\Command::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Foundation\\Application::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Container\\Container::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Events\\Dispatcher::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Cache\\Repository::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Session\\Session::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Guard::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Validation\\Validator::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\View\\View::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Mail\\Mailer::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Notifications\\Dispatcher::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\Registrar::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\UrlGenerator::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\ResponseFactory::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Routing\\Redirector::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Connection::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Query\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Eloquent\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Eloquent\\Model::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Schema\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Schema\\Blueprint::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Database\\Migrations\\Migration::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Console\\Kernel::#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Console\\Command::#'
+    
+    # Laravel-specific autoloader
+    autoload:
+        files:
+            - vendor/autoload.php
+            - bootstrap/app.php
+        directories:
+            - app
+            - config
+            - database
+            - resources
+            - routes
+            - tests
+    
+    # Laravel-specific bootstrap
+    bootstrap: bootstrap/app.php

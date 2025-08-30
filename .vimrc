@@ -59,7 +59,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'Valloric/YouCompleteMe'
-Plug 'vim-syntastic/syntastic'
 Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeFind' }
@@ -75,13 +74,15 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'rafi/awesome-vim-colorschemes'
-Plug 'github/copilot.vim'
+"Plug 'github/copilot.vim'
 "Plug 'puremourning/vimspector'
 call plug#end()
 
 
 " ============================================
 " vimspector
+" A multi language graphical debugger for Vim
+" https://github.com/puremourning/vimspector
 " ============================================
 " Standard mappings
 let g:vimspector_enable_mappings = 'HUMAN'
@@ -228,6 +229,20 @@ let g:ale_fixers = {
 \   'typescript': ['eslint', 'remove_trailing_lines', 'trim_whitespace'],
 \}
 
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'typescript': ['eslint'],
+\}
+
+" For all languages unspecified in the dictionary, all possible linters will
+" be run for those languages, just as when the dictionary is not defined.
+" Running many linters should not typically obstruct editing in Vim, as they
+" will all be executed in separate processes simultaneously.
+
+" If you don't want ALE to run anything other than what you've explicitly
+" asked for, you can set g:ale_linters_explicit to 1.
+let g:ale_linters_explicit = 1
+
 " If you want to automatically fix files when you save them, you need to turn
 " a setting on in vimrc.
 let g:ale_fix_on_save = 1
@@ -250,6 +265,14 @@ let g:airline#extensions#ale#enabled = 1"
 " let g:ale_virtualtext_cursor = 'disabled'
 
 " ============================================
+" PHPActor
+" ============================================
+" These settings are for :Phpactor<something> type of commands, not for the
+" language server
+" https://github.com/phpactor/phpactor/blob/master/plugin/phpactor.vim
+let g:phpactorPhpBin = '/usr/bin/php8.4'
+
+" ============================================
 " YouCompleteMe
 " ============================================
 " LSP configuration
@@ -262,7 +285,7 @@ endif
 let g:ycm_language_server += [
 \   {
 \     'name': 'php',
-\     'cmdline': ['/usr/bin/php8.2', '/home/jespinal/bin/phpactor', 'language-server' ],
+\     'cmdline': ['/usr/bin/php8.4', '/home/jespinal/bin/phpactor', 'language-server' ],
 \     'filetypes': [ 'php' ],
 \   },
 \ ]
@@ -370,7 +393,7 @@ let g:airline_theme='angr'
 " ============================================
 " Tagbar
 " ============================================
-let g:tagbar_ctags_bin='~/bin/ctags'
+" let g:tagbar_ctags_bin='~/bin/ctags'
 
 " Typescript ctags support
 let g:tagbar_type_typescript = {
@@ -386,30 +409,6 @@ let g:tagbar_type_typescript = {
     \ 'e:enums',
   \ ]
 \ }
-
-" ============================================
-" Gutentags
-" ============================================
-"let g:gutentags_ctags_executable = "~/bin/ctags"
-"let g:gutentags_trace = 0
-"let g:gutentags_project_root = [
-"    \ 'hostpapa',
-"\]
-"
-"let g:gutentags_add_default_project_roots = 1
-"
-"let g:gutentags_ctags_exclude = [
-"    \ 'themes/*',
-"    \ 'puphpet/*',
-"    \ 'vendor/*',
-"    \ 'googlesitemaps/*',
-"    \ 'minify/*',
-"    \ 'Landers/*',
-"    \ 'sqlite3/*',
-"    \ 'phpunit/*',
-"    \ 'framework/thirdparty*',
-"    \ 'bootstrap-forms*'
-"\]
 
 "============================================
 " GitGutter

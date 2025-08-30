@@ -2,33 +2,46 @@
 
 session_name="vim-$PPID";
 
-if [[ -z "$TMUX" ]]; then
-    tmux new-session -d -s "$session_name";
-    tmux send-keys -t "$session_name" "/usr/bin/env vim" Enter;
-    tmux send-keys -t "$session_name" Escape;
-
-    file_num=1;
-    for element in "${@}"; do
-        if [ "$element" = "-p" ]; then
-            continue;
-        fi
-
-        if [ "$file_num" -eq 1 ]; then
-            command=":e"
-        else
-            command=":tabnew"
-        fi
-
-        file_num=$(expr $file_num + 1);
-
-        tmux send-keys -t "$session_name" "$command $element" Enter;
-    done;
-
-    tmux send-keys -t "$session_name" ":tabfirst" Enter
-    tmux send-keys -t "$session_name" Escape;
-else
+# Check if we're already in a tmux session
+if [[ -n "$TMUX" ]]; then
     /usr/bin/env vim "$@";
     exit;
 fi
+
+# Check if this is a session load request (-S flag)
+if [[ "$1" == "-S" ]]; then
+    # For session loading, create tmux session and load the session file
+    session_file="$2"
+    
+    tmux new-session -d -s "$session_name";
+    tmux send-keys -t "$session_name" "/usr/bin/env vim -S $session_file" Enter;
+    tmux attach-session -t "$session_name";
+    exit;
+fi
+
+# Regular file opening with tmux
+tmux new-session -d -s "$session_name";
+tmux send-keys -t "$session_name" "/usr/bin/env vim" Enter;
+tmux send-keys -t "$session_name" Escape;
+
+file_num=1;
+for element in "${@}"; do
+    if [ "$element" = "-p" ]; then
+        continue;
+    fi
+
+    if [ "$file_num" -eq 1 ]; then
+        command=":e"
+    else
+        command=":tabnew"
+    fi
+
+    file_num=$(expr $file_num + 1);
+
+    tmux send-keys -t "$session_name" "$command $element" Enter;
+done;
+
+tmux send-keys -t "$session_name" ":tabfirst" Enter
+tmux send-keys -t "$session_name" Escape;
 
 tmux attach-session -t "$session_name"

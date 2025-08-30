@@ -1,0 +1,45 @@
+# PHPStan Base Configuration
+# This file contains common settings that can be inherited by project-specific configurations
+# Include this file in your phpstan.neon using: includes: [phpstan-base.neon]
+
+parameters:
+    # Common exclude patterns for most PHP projects
+    excludePaths:
+        # Vendor dependencies
+        - vendor/*
+        # Cache and temporary directories
+        - var/cache/*
+        - cache/*
+        - var/logs/*
+        - logs/*
+        - tmp/*
+        - temp/*
+        # Build and generated files
+        - build/*
+        - dist/*
+        - node_modules/*
+        # IDE and editor files
+        - .idea/*
+        - .vscode/*
+        - *.swp
+        - *.swo
+        - *~
+    
+    # Common ignore patterns for framework-specific errors
+    ignoreErrors:
+        # Generic dynamic method call patterns
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::#'
+        - '#Access to an undefined property [a-zA-Z0-9\\_]+::\$#'
+        - '#Parameter \$[a-zA-Z0-9_]+ of method [a-zA-Z0-9\\_]+::[a-zA-Z0-9_]+\(\) has invalid type#'
+        - '#Return type of method [a-zA-Z0-9\\_]+::[a-zA-Z0-9_]+\(\) has invalid type#'
+    
+    # Performance settings
+    memoryLimit: 2G
+    scanFiles: false
+    scanDirectories: false
+    
+    # Analysis settings
+    checkMissingIterableValueType: true
+    checkGenericClassInNonGenericObjectType: true
+    treatPhpDocTypesAsCertain: true
+    reportUnmatchedIgnoredErrors: false

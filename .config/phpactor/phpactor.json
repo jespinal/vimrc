@@ -1,0 +1,30 @@
+{
+    "language_server_phpstan.enabled": true,
+    "language_server_phpstan.bin": "\/home\/jespinal\/bin\/phpstan",
+    "language_server_phpstan.level": null,
+    "language_server_phpstan.config": null,
+    "language_server_phpstan.mem_limit": null,
+    "language_server_phpstan.tmp_file_disabled": false,
+    "language_server_php_cs_fixer.enabled": true,
+    "language_server_php_cs_fixer.bin": "\/home\/jespinal\/bin\/php-cs-fixer",
+    "language_server_php_cs_fixer.env": {
+        "XDEBUG_MODE": "off",
+        "PHP_CS_FIXER_IGNORE_ENV": true
+    },
+    "language_server_php_cs_fixer.show_diagnostics": true,
+    "language_server_php_cs_fixer.config": null,
+    "language_server_highlight.enabled": true,
+    "php_code_sniffer.enabled": true,
+    "php_code_sniffer.bin": "\/home\/jespinal\/bin\/phpcs",
+    "php_code_sniffer.env": {
+        "XDEBUG_MODE": "off"
+    },
+    "php_code_sniffer.show_diagnostics": true,
+    "php_code_sniffer.args": [],
+    "php_code_sniffer.cwd": "%project_root%",
+    "logging.enabled": true,
+    "logging.fingers_crossed": false,
+    "logging.path": "/tmp/phpactor-application.log",
+    "logging.level": "warning",
+    "logger.name": "logger"
+}
